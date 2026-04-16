@@ -18,9 +18,7 @@ public class PetSteps {
     Response response;
     long petId;
 
-    // ===========================
     // TEST CASE 1: CRUD
-    // ===========================
 
     @Given("I create a new pet with name {string} and status {string}")
     public void createPet(String name, String status) {
@@ -106,9 +104,7 @@ public class PetSteps {
         assertEquals(response.getStatusCode(), code);
     }
 
-    // ===========================
     // TEST CASE 2: INVENTORY
-    // ===========================
 
     int inventoryCount;
 
@@ -156,9 +152,7 @@ public class PetSteps {
         assertTrue(listSize <= inventoryCount + 50);
     }
 
-    // ===========================
     // TEST CASE 3: NEGATIVE
-    // ===========================
 
     @When("I create a user with invalid email")
     public void createInvalidUser() {
@@ -211,9 +205,7 @@ public class PetSteps {
         assertTrue(responseBody.contains("logged in user session"));
     }
 
-    // ===========================
     // TEST CASE 4: CROSS-ENDPOINT
-    // ===========================
 
     boolean petFound;
 
