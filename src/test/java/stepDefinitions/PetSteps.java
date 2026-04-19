@@ -3,6 +3,7 @@ package stepDefinitions;
 import api.PetAPI;
 import io.cucumber.java.en.*;
 import io.restassured.response.Response;
+import utils.ConfigReader;
 
 import java.util.List;
 
@@ -41,6 +42,8 @@ public class PetSteps {
         int retries = 3;
         boolean found = false;
 
+        String notFoundMsg = ConfigReader.getProperty("petNotFoundMessage");
+
         while (retries > 0) {
 
             response = PetAPI.getPet(petId);
@@ -48,7 +51,7 @@ public class PetSteps {
             String body = response.asString();
             log.info("GET RESPONSE: {}", body);
 
-            if (!body.contains("Pet not found")) {
+            if (!body.contains(notFoundMsg)) {
                 found = true;
                 break;
             }
@@ -202,7 +205,9 @@ public class PetSteps {
 
         log.info("Login Response: {}", responseBody);
 
-        assertTrue(responseBody.contains("logged in user session"));
+        assertTrue(responseBody.contains(
+                ConfigReader.getProperty("loginSuccessMessage")
+        ));
     }
 
     // TEST CASE 4: CROSS-ENDPOINT
@@ -233,7 +238,8 @@ public class PetSteps {
 
         Thread.sleep(3000);
 
-        response = PetAPI.getPetsByStatus("sold");
+        String soldStatus = ConfigReader.getProperty("soldStatus");
+        response = PetAPI.getPetsByStatus(soldStatus);
     }
 
     @Then("my created pet should be present in sold list")
@@ -255,7 +261,7 @@ public class PetSteps {
 
             log.info("Actual status from GET: {}", status);
 
-            assertEquals(status, "sold");
+            assertEquals(status, ConfigReader.getProperty("soldStatus"));
         } else {
             assertTrue(petFound);
         }
